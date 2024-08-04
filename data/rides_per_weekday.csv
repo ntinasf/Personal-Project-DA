@@ -1,0 +1,15 @@
+rides_per_day,day_of_week,member_casual,num
+295359,FRIDAY,casual,4
+519376,FRIDAY,member,4
+237139,MONDAY,casual,0
+511635,MONDAY,member,0
+424288,SUNDAY,member,6
+358317,SUNDAY,casual,6
+239133,TUESDAY,casual,1
+572403,TUESDAY,member,1
+481289,SATURDAY,member,5
+417923,SATURDAY,casual,5
+253595,THURSDAY,casual,3
+584124,THURSDAY,member,3
+247920,WEDNESDAY,casual,2
+591880,WEDNESDAY,member,2
