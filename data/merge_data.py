@@ -13,8 +13,11 @@ def merge_csv(path):
   # Create a list that contains the current directory's files.
   files_list = os.listdir(path)
 
+  # Keep only the csv files.
+  csv_files = [f for f in files_list if f.endswith('.csv')]
+
   i = 0
-  for  item in sorted(files_list):
+  for  item in sorted(csv_files):
      with open(item, 'r', newline='') as file_1, open('merged_data.csv', 'a', newline='') as merged:
         reader = csv.reader(file_1)
         if i != 0:
@@ -32,7 +35,3 @@ def main():
 
 if __name__ == '__main__':
    main()
-
-
-
-
