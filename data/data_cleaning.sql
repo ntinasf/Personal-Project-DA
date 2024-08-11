@@ -1,8 +1,6 @@
 --------------------------------------------------------------------------------------------
 
--- Change ##### with the name of your BigQuery project to reproduce the code
-
--- Schema of the new table that contains all data 
+-- Schema of the initial table that contains all data 
 -- The name of the table is 'bike_rides'
 CREATE TABLE `#####.bike_rides.bike_rides`
 (
@@ -83,6 +81,7 @@ WHERE (end_lat IS NULL) OR (end_lng IS NULL) ;
 DELETE
 FROM #####.bike_rides.bike_rides
 WHERE (end_lat IS NULL) OR (end_lng IS NULL) ;
+-- 7919 rows were deleted
 
 -- Check station names for nulls
 SELECT 
@@ -98,7 +97,7 @@ FROM #####.bike_rides.bike_rides
 WHERE (start_station_id IS NULL) OR (end_station_id IS NULL);
 -- again there are 1,452,114 rows with at least one null value
 -- It is possible to Manually impute some of these null values, using stations' coordinates as reference 
--- this will be a time consuming work that wont add much value to our analysis
+-- But this is a time consuming work that wont add much value to our analysis
 
 -- Check for duplicates in station names
 SELECT 
@@ -149,6 +148,7 @@ WHERE true;
 DELETE
 FROM #####.bike_rides.bike_rides
 WHERE TIME_DIFF(TIME(ended_at), TIME(started_at), MINUTE) < 0 AND DATE_DIFF(DATE(ended_at), DATE(started_at), DAY) > 0;
+-------------------------------------------------------------------------------------------------------------
 
 -- New tables
 
@@ -170,7 +170,7 @@ SELECT
 FROM #####.bike_rides.bike_rides;
 -- 
 
--- The results from the query below will be saved to a new table named 'stations'
+-- The results from the query below will be saved to a new table named 'start_stations'
 SELECT  
   start_station_name AS station,
   ROUND(AVG(start_lat),3) AS lat,
@@ -185,5 +185,38 @@ FROM #####.bike_rides.bike_rides
 WHERE start_station_name IS NOT NULL
 GROUP BY start_station_name
 ORDER BY num_of_start_rides;
+
+
+-- The results from the query below will be saved to a new table named 'end_stations'
+SELECT  
+  end_station_name AS station,
+  COUNT(end_station_name) AS num_of_end_rides,
+  SUM(CASE WHEN member_casual = 'member' THEN 1 ELSE 0 END) AS end_member_rides,
+  SUM(CASE WHEN member_casual = 'casual' THEN 1 ELSE 0 END) AS end_casual_rides
+FROM cert1-394619.bike_rides.bike_rides
+WHERE end_station_name IS NOT NULL
+GROUP BY end_station_name;
+
+-- Join the two previous tables and create a table named 'stations'
+SELECT
+  start.station,
+  start.lat,
+  start.long,
+  start.num_of_start_rides,
+  ended.num_of_end_rides,
+  start.start_member_rides,
+  ended.end_member_rides,
+  start.start_casual_rides,
+  ended.end_casual_rides,
+  start.electric_bike_rides,
+  start.classic_bike_rides,
+  start.docked_bike_rides
+FROM cert1-394619.bike_rides.start_stations AS start
+JOIN cert1-394619.bike_rides.end_stations AS ended
+ON start.station = ended.station;
+
+-- Delete tables 'statrt_stations' and 'end_stations' as they are not needed any more.
+DROP TABLE bike_rides.end_stations;
+DROP TABLE bike_rides.start_stations;
 
 --------------------------------------------------------------------------------------------------
