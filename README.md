@@ -1,7 +1,7 @@
 ## Bike-sharing case study<br>
 
 ## Intro<br><hr>
-This is a personal data analysis project inspired by this [module](https://www.coursera.org/learn/google-data-analytics-capstone) of the [Google Data Analytics certicate](https://www.coursera.org/professional-certificates/google-data-analytics).
+This is a personal data analysis project inspired by this [module](https://www.coursera.org/learn/google-data-analytics-capstone) of the [Google Data Analytics certificate](https://www.coursera.org/professional-certificates/google-data-analytics).
 <br>The purpose of this project is to conduct an end-to-end data analysis procedure for a fictional company named *Cyclistic*.<br><br>
 
 ### Objective<br><hr>
@@ -9,7 +9,7 @@ The task at hand is to identify how do annual members (*members*) and casual rid
 The findings of this analysis can help the company increase its' annual memberships through strategic marketing.<br><br>
 
 ### Data<br><hr>
-The data source can be found [here](https://divvy-tripdata.s3.amazonaws.com/index.html). These are open source data made available by Motivate International Inc. under this[license](https://divvybikes.com/data-license-agreement). Note that using rider's personally identifiable information is prohibited for privacy reasons.<br>
+The data source can be found [here](https://divvy-tripdata.s3.amazonaws.com/index.html). These are open source data made available by Motivate International Inc. under this [license](https://divvybikes.com/data-license-agreement). Note that using rider's personally identifiable information is prohibited for privacy reasons.<br>
 For this task we used the available data from July 2023 until June 2024. The files where downloaded and extracted into the [data](https://github.com/ntinasf/Personal-Project-DA/tree/main/data) folder, and then merged into a unified csv file through the *merge_data.py* python script.<br><br>
 
 ### Data cleaning and tranformation<br><hr>
