@@ -24,29 +24,29 @@ The new tables were downloaded from BigQuery and then analyzed using a Jupyter N
 | --- | --- |
 | Riding preference peaks on weekdays | Riding preference peaks on weekend |
 
-![alt text](day.png)
-![alt text](preference.png)
+![alt text](images/day.png)
+![alt text](images/preference.png)
 
 <br><br>
 | Members | Casuals |
 | --- | --- |
 | Rely on bikes for utilitarian reasons (eg. go to/return from work) |  Use bikes mainly for leisure activities in the afternoon|
 
-![alt text](hour.png)
+![alt text](images/hour.png)
 <br><br>
 
 | Members | Casuals |
 | --- | --- |
 | Top destinations include office parks and downtown destinations (dark green circles)| Top destinations are mostly tourist places and coastal areas (big circles) |
 
-![alt text](stations.png)
+![alt text](images/stations.png)
 <br><br>
 
 | Members | Casuals |
 | --- | --- |
 | Prefer shorter rides (mainly between 5 and 15 min) | Prefer longer rides (mainly between 7 and 23 min) |
 
-![alt text](duration.png)
+![alt text](images/duration.png)
 <br><br>
 
 #### *Recommendations*<br>
