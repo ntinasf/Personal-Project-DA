@@ -2,7 +2,7 @@
 
 -- Schema of the initial table that contains all data 
 -- The name of the table is 'bike_rides'
-CREATE TABLE `#####.bike_rides.bike_rides`
+CREATE TABLE `bike_rides.bike_rides`
 (
   ride_id STRING,
   rideable_type STRING,
@@ -22,31 +22,31 @@ CREATE TABLE `#####.bike_rides.bike_rides`
 -- Take a quick look at the data
 SELECT
   *
-FROM #####.bike_rides.bike_rides
+FROM bike_rides.bike_rides
 LIMIT 10;
 -- There are 5,734,381 rows in this table. 
 
 -- Check string variables for duplicates, nulls or spelling errors
 SELECT
   COUNT(*)
-FROM #####.bike_rides.bike_rides
+FROM bike_rides.bike_rides
 WHERE ride_id IS NULL;
 
 SELECT
   COUNT(*)
-FROM #####.bike_rides.bike_rides
+FROM bike_rides.bike_rides
 WHERE rideable_type IS NULL;
 
 SELECT
   COUNT(*)
-FROM #####.bike_rides.bike_rides
+FROM bike_rides.bike_rides
 WHERE member_casual IS NULL;
 -- Everything is fine
 
 -- Chech time values for nulls
 SELECT
   COUNT(*)
-FROM #####.bike_rides.bike_rides
+FROM bike_rides.bike_rides
 WHERE (started_at IS NULL) OR (ended_at IS NULL);
 -- No nulls found
 
@@ -56,13 +56,13 @@ SELECT
   MAX(DATE(started_at)),
   MIN(DATE(ended_at)),
   MAX(DATE(ended_at))
-FROM #####.bike_rides.bike_rides;
+FROM bike_rides.bike_rides;
 -- Everything fine
 
 -- Check station coordinates for nulls
 SELECT
   *
-FROM #####.bike_rides.bike_rides
+FROM bike_rides.bike_rides
 WHERE (start_lat IS NULL) OR (start_lng IS NULL) OR (end_lat IS NULL)OR (end_lng IS NULL);
 -- There are 7919 rows with nulls values. By further inspection, we see that the missing values come 
 -- only from the end stations' coordinates
@@ -74,26 +74,26 @@ SELECT
     WHEN TIME_DIFF(TIME(ended_at), TIME(started_at), MINUTE) < 0 THEN 1440 + TIME_DIFF(TIME(ended_at), TIME(started_at), MINUTE)
     ELSE TIME_DIFF(TIME(ended_at), TIME(started_at), MINUTE)
   END AS ride_duration,
-FROM #####.bike_rides.bike_rides
+FROM bike_rides.bike_rides
 WHERE (end_lat IS NULL) OR (end_lng IS NULL) ;
 -- the vast majority of these rides seem to last exactly 60 minutes, and many of them last an unexoected amount of time
 -- This might be an indication of something going wrong with these rides, and it would be better to omit them
 DELETE
-FROM #####.bike_rides.bike_rides
+FROM bike_rides.bike_rides
 WHERE (end_lat IS NULL) OR (end_lng IS NULL) ;
 -- 7919 rows were deleted
 
 -- Check station names for nulls
 SELECT 
   COUNT(*)
-FROM #####.bike_rides.bike_rides
+FROM bike_rides.bike_rides
 WHERE (start_station_name IS NULL) OR (end_station_name IS NULL);
 -- there are 1,452,114 rows with at least one null value in the station names
 
 -- The same for station ids
 SELECT 
   COUNT(*)
-FROM #####.bike_rides.bike_rides
+FROM bike_rides.bike_rides
 WHERE (start_station_id IS NULL) OR (end_station_id IS NULL);
 -- again there are 1,452,114 rows with at least one null value
 -- It is possible to Manually impute some of these null values, using stations' coordinates as reference 
@@ -102,13 +102,13 @@ WHERE (start_station_id IS NULL) OR (end_station_id IS NULL);
 -- Check for duplicates in station names
 SELECT 
   start_station_id
-FROM #####.bike_rides.bike_rides
+FROM bike_rides.bike_rides
 GROUP BY start_station_id
 HAVING COUNT (DISTINCT start_station_name)  > 1;
 
 SELECT 
   end_station_id
-FROM #####.bike_rides.bike_rides
+FROM bike_rides.bike_rides
 GROUP BY end_station_id
 HAVING COUNT (DISTINCT end_station_name)  > 1;
 -- There are at least 88 station ids that correspond to more than one station names
@@ -116,37 +116,37 @@ HAVING COUNT (DISTINCT end_station_name)  > 1;
 -- Check for duplicates in station ids
 SELECT 
   start_station_name
-FROM #####.bike_rides.bike_rides
+FROM bike_rides.bike_rides
 GROUP BY start_station_name
 HAVING COUNT (DISTINCT start_station_id)  > 1;
 
 SELECT 
   end_station_name
-FROM #####.bike_rides.bike_rides
+FROM bike_rides.bike_rides
 GROUP BY end_station_name
 HAVING COUNT (DISTINCT end_station_id)  > 1;
 -- There are at least 48 station names that have more than one station ids
 
 -- Round coordinate values without losing spatial information
-UPDATE #####.bike_rides.bike_rides
+UPDATE bike_rides.bike_rides
 SET start_lat = ROUND(start_lat, 3)
 WHERE true;
 
-UPDATE #####.bike_rides.bike_rides
+UPDATE bike_rides.bike_rides
 SET end_lat = ROUND(end_lat, 3)
 WHERE true;
 
-UPDATE #####.bike_rides.bike_rides
+UPDATE bike_rides.bike_rides
 SET start_lng = ROUND(start_lng, 3)
 WHERE true;
 
-UPDATE #####.bike_rides.bike_rides
+UPDATE bike_rides.bike_rides
 SET end_lng = ROUND(end_lng, 3)
 WHERE true;
 
 -- Remove rides that lasted over 24 hours
 DELETE
-FROM #####.bike_rides.bike_rides
+FROM bike_rides.bike_rides
 WHERE TIME_DIFF(TIME(ended_at), TIME(started_at), MINUTE) < 0 AND DATE_DIFF(DATE(ended_at), DATE(started_at), DAY) > 0;
 -------------------------------------------------------------------------------------------------------------
 
@@ -167,7 +167,7 @@ SELECT
     ELSE TIME_DIFF(TIME(ended_at), TIME(started_at), MINUTE)
   END AS ride_duration,
   rideable_type
-FROM #####.bike_rides.bike_rides;
+FROM bike_rides.bike_rides;
 -- 
 
 -- The results from the query below will be saved to a new table named 'start_stations'
@@ -181,7 +181,7 @@ SELECT
   SUM(CASE WHEN rideable_type = 'electric_bike' THEN 1 ELSE 0 END) AS electric_bike_rides,
   SUM(CASE WHEN rideable_type = 'classic_bike' THEN 1 ELSE 0 END) AS classic_bike_rides,
   SUM(CASE WHEN rideable_type = 'docked_bike' THEN 1 ELSE 0 END) AS docked_bike_rides, 
-FROM #####.bike_rides.bike_rides
+FROM bike_rides.bike_rides
 WHERE start_station_name IS NOT NULL
 GROUP BY start_station_name
 ORDER BY num_of_start_rides;
@@ -193,7 +193,7 @@ SELECT
   COUNT(end_station_name) AS num_of_end_rides,
   SUM(CASE WHEN member_casual = 'member' THEN 1 ELSE 0 END) AS end_member_rides,
   SUM(CASE WHEN member_casual = 'casual' THEN 1 ELSE 0 END) AS end_casual_rides
-FROM cert1-394619.bike_rides.bike_rides
+FROM bike_rides.bike_rides
 WHERE end_station_name IS NOT NULL
 GROUP BY end_station_name;
 
@@ -211,8 +211,8 @@ SELECT
   start.electric_bike_rides,
   start.classic_bike_rides,
   start.docked_bike_rides
-FROM cert1-394619.bike_rides.start_stations AS start
-JOIN cert1-394619.bike_rides.end_stations AS ended
+FROM bike_rides.start_stations AS start
+JOIN bike_rides.end_stations AS ended
 ON start.station = ended.station;
 
 -- Delete tables 'statrt_stations' and 'end_stations' as they are not needed any more.
